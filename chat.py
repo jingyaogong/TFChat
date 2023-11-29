@@ -7,7 +7,7 @@ from utils import *
 from handle_dataset.生成汉字字典 import *
 
 load_checkpoint = True
-ckpt_path = 'checkpoint.pth'
+ckpt_path = 'checkpoint_2_20.pth'
 checkpoint = torch.load(ckpt_path)
 transformer = checkpoint['transformer']
 
@@ -76,7 +76,7 @@ def chat_with_pre():
         question = ' '.join(split_words)
 
         # max_len = input("Maximum Reply Length: ")
-        max_len = 300
+        max_len = 256
         enc_qus = [word_map.get(word, word_map['<unk>']) for word in question.split()]
         question = torch.LongTensor(enc_qus).to(device).unsqueeze(0)
         question_mask = (question != 0).to(device).unsqueeze(1).unsqueeze(1)
@@ -88,28 +88,14 @@ def chat_with_pre():
 
 def eval_from_train_dataset():
     import json
-    max_len = 100
-    # 打开JSON文件以读取数据
-    with open('./dataset/dataset/dataset_train.json', 'r', encoding='utf-8') as json_file:
-        data = json_file.read()
-
-    # 分割JSON对象并处理每个对象
-    data = data.split('\n')  # 使用换行符分割JSON对象
-
-    # 初始化空字典来存储汉字映射
-    chinese_character_mapping = {}
-    next_index = 1  # 下一个可用的索引
-
-    for idx, json_object in enumerate(data):
-        if not json_object.strip():
-            continue  # 跳过空行
-
-        # 解析JSON对象
-        obj = json.loads(json_object)
-
-        # 从描述和答案中获取文本
-        desc = obj.get("desc", "")
-        answer = obj.get("answer", "")
+    max_len = 256
+    input_file = "./dataset/dataset/data_zh.json"
+    with open(input_file, "r", encoding="utf-8") as file:  # 指定编码格式为utf-8
+        data_zh = json.load(file)
+    next_index=0
+    for idx, item in enumerate(data_zh):
+        instruction = item["instruction"]
+        desc = instruction.replace('\n\n', '\n')
         if len(desc) <= 0 or len(desc) >= max_len:
             continue
         split_words = [_ for _ in desc]
