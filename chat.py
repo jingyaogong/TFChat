@@ -7,7 +7,7 @@ from utils import *
 from handle_dataset.生成汉字字典 import *
 
 load_checkpoint = True
-ckpt_path = 'checkpoint_2_20.pth'
+ckpt_path = 'checkpoint.pth'
 checkpoint = torch.load(ckpt_path)
 transformer = checkpoint['transformer']
 
