@@ -34,7 +34,7 @@ python handle_dataset/生成对话对.py
 ```
 python train.py --d_model 512 --heads 8 --num_layers 2 --device cuda --epochs 100
 ```
-测试聊天（附加：5轮小规模预训练[checkpoint.pth](https://pan.baidu.com/s/1RP-JhyMuNa7N-cYEqS_GVA?pwd=8765 )）
+测试聊天（附加：5轮小规模预训练[checkpoint.pth](https://pan.baidu.com/s/1YewPK9cLvKZA5V9-oeLbZw?pwd=8765 )）
 ```
 python chat.py
 ```
