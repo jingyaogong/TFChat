@@ -132,4 +132,4 @@ def eval_from_train_dataset():
 
 
 if __name__=='__main__':
-    chat_with_input()
+    eval_from_train_dataset()

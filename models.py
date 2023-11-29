@@ -5,11 +5,13 @@ import torch.nn.functional as F
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
+
 class Embeddings(nn.Module):
     """
     实现词的嵌入并添加位置编码。
     """
-    def __init__(self, vocab_size, d_model, max_len=300):
+
+    def __init__(self, vocab_size, d_model, max_len):
         super(Embeddings, self).__init__()
         self.d_model = d_model
         self.dropout = nn.Dropout(0.1)
@@ -28,8 +30,7 @@ class Embeddings(nn.Module):
 
     def forward(self, encoded_words):
         embedding = self.embed(encoded_words) * math.sqrt(self.d_model)
-        embedding += self.pe[:,
-                     :embedding.size(1)]  # pe会自动扩展为与encoded_words相同的批次大小
+        embedding += self.pe[:, :embedding.size(1)]  # pe会自动扩展为与encoded_words相同的批次大小
         embedding = self.dropout(embedding)
         return embedding
 
@@ -38,6 +39,7 @@ class MultiHeadAttention(nn.Module):
     """
     多头注意力机制。
     """
+
     def __init__(self, heads, d_model):
         super(MultiHeadAttention, self).__init__()
         assert d_model % heads == 0
@@ -73,6 +75,7 @@ class FeedForward(nn.Module):
     """
     前馈神经网络。
     """
+
     def __init__(self, d_model, middle_dim=2048):
         super(FeedForward, self).__init__()
 
@@ -90,6 +93,7 @@ class EncoderLayer(nn.Module):
     """
     编码器层。
     """
+
     def __init__(self, d_model, heads):
         super(EncoderLayer, self).__init__()
         self.layernorm = nn.LayerNorm(d_model)
@@ -109,6 +113,7 @@ class DecoderLayer(nn.Module):
     """
     解码器层。
     """
+
     def __init__(self, d_model, heads):
         super(DecoderLayer, self).__init__()
         self.layernorm = nn.LayerNorm(d_model)
@@ -131,7 +136,8 @@ class Transformer(nn.Module):
     """
     Transformer模型。
     """
-    def __init__(self, d_model, heads, num_layers, word_map, max_len=100):
+
+    def __init__(self, d_model, heads, num_layers, word_map, max_len=260):
         super(Transformer, self).__init__()
 
         self.d_model = d_model

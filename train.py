@@ -1,6 +1,8 @@
 import torch.utils.data as data
 from models import *
 from utils import *
+import argparse
+import torch
 
 
 def count_parameters(model):
@@ -11,17 +13,29 @@ train_loader = data.DataLoader(Dataset(),
                                shuffle=True,
                                pin_memory=True)
 
-d_model = 512
-heads = 8
-num_layers = 2
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-epochs = 100
+def parse_args():
+    parser = argparse.ArgumentParser(description="Transformer模型参数")
+    parser.add_argument("--d_model", type=int, default=256, help="模型中的隐藏层维度")
+    parser.add_argument("--heads", type=int, default=16, help="多头注意力机制中的头数")
+    parser.add_argument("--num_layers", type=int, default=3, help="Transformer模型中的层数")
+    parser.add_argument("--device", type=str, default="cuda" if torch.cuda.is_available() else "cpu", help="使用的设备")
+    parser.add_argument("--epochs", type=int, default=100, help="训练的轮数")
+    return parser.parse_args()
+
+args = parse_args()
+
+d_model = args.d_model
+heads = args.heads
+num_layers = args.num_layers
+device = torch.device(args.device)
+epochs = args.epochs
+
 
 with open('./dataset/WORDMAP_corpus.json', 'r') as j:
     word_map = json.load(j)
 
 # 创建Transformer模型
-transformer = Transformer(d_model=d_model, heads=heads, num_layers=num_layers, word_map=word_map, max_len=120)
+transformer = Transformer(d_model=d_model, heads=heads, num_layers=num_layers, word_map=word_map)
 transformer = transformer.to(device)
 adam_optimizer = torch.optim.Adam(transformer.parameters(), lr=1e-5, betas=(0.9, 0.999), eps=1e-9)
 transformer_optimizer = AdamWarmup(model_size=d_model, warmup_steps=4000, optimizer=adam_optimizer)
@@ -67,12 +81,12 @@ def train(train_loader, transformer, criterion, epoch):
         count += samples
 
         if i % 100 == 0:
-            print("Epoch [{}][{}/{}]\t损失: {:.3f}".format(epoch, i, len(train_loader), sum_loss / count))
+            print("Epoch [{}][{}/{}]\t Loss: {:.3f}".format(epoch, i, len(train_loader), sum_loss / count))
 
 
 for epoch in range(epochs):
     train(train_loader, transformer, criterion, epoch)
 
-    if epoch % 4 == 0:
+    if epoch % 20 == 0:
         state = {'epoch': epoch, 'transformer': transformer, 'transformer_optimizer': transformer_optimizer}
         torch.save(state, 'checkpoint_2_' + str(epoch) + '.pth')

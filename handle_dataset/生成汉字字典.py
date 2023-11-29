@@ -5,7 +5,7 @@ common_characters = "，。！？；：“”‘’()[]&#;``【】``;《》12345
 common_english_punctuation = ".,!?;:\"'()[]{}<>qwertyuiopasdfghjklzxcvbnm"
 
 # 打开JSON文件以读取汉字映射数据
-with open('../dataset/dataset/char_common.json', 'r', encoding='utf-8') as json_file:
+with open('dataset/dataset/char_common.json', 'r', encoding='utf-8') as json_file:
     char_data = json.load(json_file)
 
 # 创建汉字映射字典
