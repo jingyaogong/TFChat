@@ -1,3 +1,8 @@
+
+<div style="text-align: center;">
+  <img src="md_imgs/logo.png" alt="logo" style="width: 50%;">
+</div>
+
 # 实现聊天机器人TFChat，本质上是个麻雀虽小五脏俱全的ChatGPT
 
 * 这是一个使用Transformer构建的问答GPT，代码很简化，有注释，是一个教程和备忘录。
