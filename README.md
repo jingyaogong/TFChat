@@ -58,7 +58,11 @@ python chat.py
 `./handle_dataset/*.py:` 数据集生成（首先执行） <br/>
 `utils.py:` 工具类  <br/>
 `models.py:` 模型文件 <br/>
-> TFChat是一个标准的Seq2Seq结构
+> 常见的LLama，GPT，国产大模型清一色是Decoder-only系列，因为Chat-Model本质上并不需要编码即可完美地生成对话
+> 
+> Encoder-only代表有Bert
+> 
+> TFChat完成了一个标准的Seq2Seq编码-解码结构，起到学习作用
 > 1. **Embeddings层：** 该层将输入的词汇索引映射为对应的词嵌入向量，并添加了位置编码。这有助于网络理解词汇的语义和位置信息。
 > 2. **Encoder层：** 包含多个相同结构的编码器层，每个层由自注意力机制（Multi-Head
    Attention）和前馈神经网络组成。自注意力机制使模型能够在输入序列中捕捉不同位置的关系，而前馈神经网络则对每个位置的特征进行非线性变换。
