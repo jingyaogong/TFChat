@@ -1,7 +1,8 @@
 
 <div style="text-align: center;">
-  <img src="md_imgs/logo.png" alt="logo" style="width: 50%;">
+  <img src="md_imgs/logo.png" alt="logo" style="width: 50%; display: block; margin: 0 auto;">
 </div>
+
 
 # 实现聊天机器人TFChat，本质上是个麻雀虽小五脏俱全的ChatGPT
 
